@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "express": "^4.16.1",
+    "hashids": "^1.1.1",
+    "open": "0.0.5",
+    "socket.io": "^2.0.3",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "prem-chat",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "immutability-helper": "^2.4.0",
+    "moment": "^2.18.1",
+    "random-name": "^0.1.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-moment": "^0.6.5",
+    "react-scripts": "1.0.14",
+    "rebass": "^1.0.4",
+    "socket.io-client": "^2.0.3",
+    "styled-components": "^2.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "blast": "npm run blast-off-server & npm run blast-off-client",
+    "blast-off": "npm-run-all blast-off-server blast-off-client",
+    "blast-off-server": "cd ../server nodemon server.js",
+    "blast-off-client": "react-scripts start"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "npm-run-all": "^4.1.1"
+  }
+}

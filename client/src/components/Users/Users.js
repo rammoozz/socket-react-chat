@@ -31,7 +31,7 @@ export const Users = ({socketData, handleClickUser, me,chatWith,isBuzzing}) => {
               return (
                 <div key={l} style={{margin: '20px 10px'}}>
                   <User
-                  isBuzzing={clientObj.clientId === isBuzzing}
+                  isBuzzing={isBuzzing[clientObj.clientId] === true}
                   chattingWith={clientObj.clientId === chatWith}
                     me={me}
                     key={l}

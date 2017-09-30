@@ -13,7 +13,7 @@ const Circle = styled.div`
   margin: auto;
   background: ${p => p.chattingWith ? '#2980b9' : '#27ae60'};
   border-radius: 50%;
-  animation: ${p => p.isBuzzing && `1s ${animation} alternate infinite`};
+  animation: ${p => p.isBuzzing ? `1s ${animation} alternate infinite` : null};
 `;
 // USER
 const UserLayout = styled.div`cursor: pointer;`;

@@ -12,6 +12,8 @@ const ATTEMPT_CONNECT = 'ATTEMPT_CONNECT';
 const ACCOUNT_CREATED = 'ACCOUNT_CREATED';
 const USER_DISCONNECT = 'USER_DISCONNECT';
 const CHAT_WITH = 'CHAT_WITH';
+const BUZZ = 'BUZZ';
+const STOP_BUZZ = 'STOP_BUZZ';
 const PRIVATE_MESSAGE = 'PRIVATE_MESSAGE';
 const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID';
 const defaultImageUrl = 'http://placekitten.com/g/250/250';
@@ -33,9 +35,20 @@ onChatWith = (chatWithObj, socket) => {
 addMessageToClientArchive = (to, msg, from) => {
   const time = new Date();
   const message = {msg, time,to,from}
+
+  //buzz//
+  if(msg.includes('<buzz>')){
+    websocket.to(to).emit(BUZZ, from);
+    websocket.to(from).emit(BUZZ, to);
+  }
+  if(msg.includes('</buzz>')){
+    websocket.to(to).emit(STOP_BUZZ, from);
+    websocket.to(from).emit(STOP_BUZZ, to);
+  }
+
   connectedClients.map(client => {
     if (client.clientId === from) {
-      if (client.messages[to] && client.messages[to]!== 'undefined' && Array.isArray(client.messages[to])) {
+      if (client.messages[to] && client.messages[to]!== undefined && Array.isArray(client.messages[to])) {
         client.messages[to].push(message);
       } else {
         client.messages[to] = [message];
@@ -43,7 +56,7 @@ addMessageToClientArchive = (to, msg, from) => {
       websocket.to(from).emit(PRIVATE_MESSAGE, client.messages);
     }
     if (client.clientId === to) {
-      if (client.messages[from] && client.messages[from]!== 'undefined' && Array.isArray(client.messages[from])) {
+      if (client.messages[from] && client.messages[from]!== undefined && Array.isArray(client.messages[from])) {
         client.messages[from].push(message);
       } else {
         client.messages[from] = [message];
@@ -52,6 +65,7 @@ addMessageToClientArchive = (to, msg, from) => {
     }
   });
 };
+
 onConnection = socket => {
   socket.on(ATTEMPT_CONNECT, clientName => {
     createAccount(socket, socket.id, clientName);
@@ -61,6 +75,7 @@ onConnection = socket => {
     findDisconnectedId(connectedClients, socket.id);
   });
   socket.on(CHAT_WITH, onChatWith);
+  
 };
 createAccount = (socket, clientId, clientName) => {
   console.log('CREATE_ACCOUNT', clientId, clientName);

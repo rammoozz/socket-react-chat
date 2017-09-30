@@ -99,13 +99,14 @@ class App extends Component {
     }
   };
   onStopBuzz = from => {
-    const currentState = this.state.isBuzzing;
-    const newState = update(currentState[from], {
-      isBuzzing: {$set: false},
-    });
-    this.setState({
-      isBuzzing: newState,
-    });
+      const currentState = Object.assign({},this.state.isBuzzing)
+
+      const newState = update(currentState, {
+        [from]: {$set: false},
+      });
+      this.setState({
+        isBuzzing:newState
+      })
   };
   onUserDisconnect = connectedClients => {
     const currentState = this.state.socketData;

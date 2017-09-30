@@ -50,6 +50,7 @@ class App extends Component {
       socketData: null,
       me: null,
       chatWith: null,
+      isBuzzing:false,
       messages: {},
     };
     this.socket = io.connect('http://localhost:8000', {forceNew: true});
@@ -61,6 +62,7 @@ class App extends Component {
     );
     this.socket.on('ACCOUNT_CREATED', this.onCreated);
     this.socket.on('PRIVATE_MESSAGE', this.onPrivateMessage);
+    this.socket.on('BUZZ', this.onBuzz);
     this.socket.on('SET_ACCOUNT_ID', this.onSetAccountId);
     this.socket.on('USER_DISCONNECT', this.onUserDisconnect);
   };
@@ -69,6 +71,12 @@ class App extends Component {
       socketData,
     });
   };
+  onBuzz = (from) =>{
+    console.log(from,'???')
+    this.setState({
+      isBuzzing:from
+    })
+  }
   onUserDisconnect = connectedClients => {
     const currentState = this.state.socketData;
     const newState = update(currentState, {
@@ -107,19 +115,26 @@ class App extends Component {
     });
 
   }
+  closeChatWith = () =>{
+    this.setState({
+      chatWithObj:null,
+      chatWith:null
+    })
+  }
   render() {
-    const {socketData, chatWithObj, me, messages, chatWith} = this.state;
-    const {onChatWithUser,onSubmit,onInputChange} = this;
+    const {socketData, chatWithObj, me, messages, chatWith,isBuzzing} = this.state;
+    const {onChatWithUser,onSubmit,onInputChange,closeChatWith} = this;
     return (
       <Layout>
         <Users
+        isBuzzing={isBuzzing}
           me={me}
           chatWith={chatWith}
           handleClickUser={onChatWithUser}
           socketData={socketData}
         />
         {chatWithObj ? (
-          <ChatWith onInputChange={onInputChange} onSubmit={onSubmit} messages={messages[chatWith]} chatWithObj={chatWithObj} />
+          <ChatWith closeChatWith={closeChatWith} me={me} onInputChange={onInputChange} onSubmit={onSubmit} messages={messages[chatWith]} chatWithObj={chatWithObj} />
         ) : <div style={{width:'100%',height:'100%',background:'#ecf0f1'}}></div>}
       </Layout>
     );

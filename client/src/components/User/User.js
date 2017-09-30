@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 
-import styled, {injectGlobal} from 'styled-components';
-
 import {Heading} from 'rebass';
+import styled, { keyframes } from 'styled-components';
+import { bounce } from 'react-animations';
+
+const animation = keyframes`${bounce}`;
 
 const Circle = styled.div`
   width: 50px;
@@ -11,10 +13,11 @@ const Circle = styled.div`
   margin: auto;
   background: ${p => p.chattingWith ? '#2980b9' : '#27ae60'};
   border-radius: 50%;
+  animation: ${p => p.isBuzzing && `1s ${animation} alternate infinite`};
 `;
 // USER
 const UserLayout = styled.div`cursor: pointer;`;
-export const User = ({clientObj, handleClickUser, me,chattingWith}) => {
+export const User = ({clientObj, handleClickUser, me,chattingWith,isBuzzing}) => {
   const t = clientObj;
   return (
     <UserLayout
@@ -29,7 +32,7 @@ export const User = ({clientObj, handleClickUser, me,chattingWith}) => {
         alignItems: 'center',
       }}
     >
-      <Circle chattingWith={chattingWith} />
+      <Circle isBuzzing={isBuzzing} chattingWith={chattingWith} />
       <div style={{margin: 'auto',fontWeight:chattingWith && 'bold',transform:chattingWith && 'scale(1.2)',transition:'0.2s all ease'}}>{t.clientName} </div>
     </UserLayout>
   );

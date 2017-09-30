@@ -13,7 +13,7 @@ const UsersLayout = styled.div`
   grid-template-rows: 30px 1fr;
   justify-content: center;
 `;
-export const Users = ({socketData, handleClickUser, me,chatWith}) => {
+export const Users = ({socketData, handleClickUser, me,chatWith,isBuzzing}) => {
   return (
     <UsersLayout>
       <Heading
@@ -31,6 +31,7 @@ export const Users = ({socketData, handleClickUser, me,chatWith}) => {
               return (
                 <div key={l} style={{margin: '20px 10px'}}>
                   <User
+                  isBuzzing={clientObj.clientId === isBuzzing}
                   chattingWith={clientObj.clientId === chatWith}
                     me={me}
                     key={l}

@@ -17,15 +17,18 @@ class MyInput extends React.Component {
     });
   };
   onSubmit = () => {
-    this.setState({
-      formValue: '',
-    });
-    this.props.onSubmit(this.state.formValue);
+    if (this.state.formValue !== '' && this.state.formValue !== null) {
+      this.setState({
+        formValue: '',
+      });
+      this.props.onSubmit(this.state.formValue);
+    }
   };
   render() {
-    const {formValue} = this.props;
+    const {formValue, closeChatWith} = this.props;
     return (
       <div style={{display: 'flex', width: '100%'}}>
+        <div onClick={closeChatWith}>x</div>
         <input
           style={{
             border: '5px solid #ecf0f1',
@@ -73,6 +76,7 @@ export const ChatWith = ({
   onSubmit,
   onInputChange,
   formValue,
+  me,
 }) => {
   const {clientName, imageUrl} = chatWithObj;
   return (
@@ -97,17 +101,29 @@ export const ChatWith = ({
         {messages &&
           messages.map((msg, l) => {
             return (
-              <div
-                style={{
-                  gridTemplateRows: '1fr',
-                  display: 'grid',
-                  gridTemplateColumns: '200px 1fr'
-                }}
-                key={l}
-              >
-                {' '}
-                <Moment format="YYYY/MM/DD  HH:mm">{msg.time}</Moment>{' '}
-                <span style={{}}>{msg.msg}</span>
+              <div style={{display: 'flex'}} key={l}>
+                {msg.from === me ? (
+                  <div style={{display:'flex',width:'100%'}}><span
+                    style={{
+                      display: 'flex',
+                      flex: '0 0 30%',
+                    }}
+                  >
+                    <Moment format="YYYY/MM/DD  HH:mm">{msg.time}</Moment>
+                  </span>
+                    <span style={{marginLeft:'auto',flex: '0 0 60%',fontWeight:'bold',fontSize:15}}>{msg.msg}</span></div>
+                ) : (
+                  <div
+                    style={{
+                      display: 'flex',width:'100%'
+                      
+                    }}
+                  >
+
+                    <span style={{flex: '0 0 30%',fontWeight:'bold',fontSize:15}}>{msg.msg}</span>
+                    <span style={{marginLeft:'auto',flex: '0 0 60%'}}><Moment format="YYYY/MM/DD  HH:mm">{msg.time}</Moment></span>
+                  </div>
+                )}
               </div>
             );
           })}

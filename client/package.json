@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "immutability-helper": "^2.4.0",
-    "moment": "^2.18.1",
+    "moment": "^2.29.4",
     "random-name": "^0.1.2",
     "react": "^16.0.0",
     "react-animations": "^0.1.0",
